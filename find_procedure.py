@@ -38,30 +38,29 @@
 import os
 
 
-def get_search(dir_files, current_dir, find_list,migrations):
+def get_search(dir_files, current_dir, migrations):
     while True:
+        find_list = []
         request = input("Что ищем?:")
         if request.lower() == "stop":
             break
-        else:
-            for file in dir_files:
-                if ".sql" in file:
-                    with open(os.path.join(current_dir, file)) as f:
-                        data = f.read()
-                        if request.lower() in data.lower():
-                            find_list.append(file)
-                            print(os.path.join(migrations, file))
+        for file in dir_files:
+            if ".sql" in file:
+                with open(os.path.join(current_dir, file)) as f:
+                    data = f.read()
+                    if request.lower() in data.lower():
+                        find_list.append(file)
+                        print(os.path.join(migrations, file))
         print("Всего: {}".format(len(find_list)))
         dir_files = list(find_list)
-        find_list.clear()
 
 
 def main():
     migrations = 'Migrations'
     current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), migrations)
     dir_files = os.listdir(current_dir)
-    find_list = []
     print("Введите 'stop' чтобы закончить")
-    get_search(dir_files, current_dir, find_list,migrations)
+    get_search(dir_files, current_dir, migrations)
+
 
 main()
